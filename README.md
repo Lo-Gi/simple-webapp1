@@ -1,2 +1,2 @@
 # simple-webapp1
-a simple webapp
+a simple webapp to play little games
