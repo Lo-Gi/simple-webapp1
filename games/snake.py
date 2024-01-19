@@ -1,72 +1,67 @@
-# simple snake game in python 3.12
-
 import random
-import time
+import turtle
 
-def SnakeGame():
-    width = 60
-    height = 20
+def snake_game():
+    # Set up the screen
+    screen = turtle.Screen()
+    screen.title("Snake Game")
+    screen.bgcolor("black")
+    screen.setup(width=600, height=600)
+    screen.tracer(0)
 
-    # snake and food
-    snake = [(4, 10), (4, 9), (4, 8)]
-    food = (10, 20)
+    # Snake head
+    head = turtle.Turtle()
+    head.shape("square")
+    head.color("white")
+    head.penup()
+    head.goto(0, 0)
+    head.direction = "Right"
 
-    # game logic
-    score = 0
+    # Function to move the snake
+    def move():
+        if head.direction == "Up":
+            y = head.ycor()
+            head.sety(y + 20)
 
-    ESC = 27
-    key = "RIGHT"
+        if head.direction == "Down":
+            y = head.ycor()
+            head.sety(y - 20)
 
-    while key != ESC:
-        print("Score:", score)
+        if head.direction == "Right":
+            x = head.xcor()
+            head.setx(x + 20)
 
-        prev_key = key
-        event = input()
-        key = event if event != "" else prev_key
+        if head.direction == "Left":
+            x = head.xcor()
+            head.setx(x - 20)
 
-        if key not in ["LEFT", "RIGHT", "UP", "DOWN", ESC]:
-            key = prev_key
+    # Keyboard bindings
+    def go_up():
+        if head.direction != "Down":
+            head.direction = "Up"
 
-        # calculate the next coordinates for snake
-        y = snake[0][0]
-        x = snake[0][1]
+    def go_down():
+        if head.direction != "Up":
+            head.direction = "Down"
 
-        if key == "DOWN":
-            y += 1
-        if key == "UP":
-            y -= 1
-        if key == "LEFT":
-            x -= 1
-        if key == "RIGHT":
-            x += 1
+    def go_right():
+        if head.direction != "Left":
+            head.direction = "Right"
 
-        snake.insert(0, (y, x))
+    def go_left():
+        if head.direction != "Right":
+            head.direction = "Left"
 
-        # check if we hit the border
-        if y == 0: break
-        if y == height-1: break
-        if x == 0: break
-        if x == width-1: break
+    screen.listen()
+    screen.onkey(go_up, "Up")
+    screen.onkey(go_down, "Down")
+    screen.onkey(go_right, "Right")
+    screen.onkey(go_left, "Left")
 
-        # if snake runs over itself
-        if snake[0] in snake[1:]: break
+    # Main game loop
+    while True:
+        screen.update()
+        move()
+        turtle.delay(100)  # Adjust speed
 
-        if snake[0] == food:
-            # eat the food
-            score += 1
-            food = ()
-            while food == ():
-                food = (random.randint(1, height-2), random.randint(1, width-2))
-                if food in snake:
-                    food = ()
-        else:
-            # move snake
-            last = snake.pop()
-            print(" ", end="")
-            print("\033[F", end="")  # move cursor up
-
-        print("#", end="")
-        print("\033[F", end="")  # move cursor up
-
-    print(f"Final score = {score}")
-SnakeGame()
+snake_game()

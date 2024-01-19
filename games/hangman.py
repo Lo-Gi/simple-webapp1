@@ -31,14 +31,14 @@ def HangmanGame():
 
         guessed_letters.add(letter)
 
-        if letter in word_set:
-            if word_set == guessed_letters:
-                print("You guessed the word!")
-                print("You survived!")
-                break
+        if guessed_letters.issubset(word_set):
+            print("You guessed the word!")
+            print("You survived!")
+            break
         else:
-            print("No such letter in the word")
-            tries -= 1
+            if letter not in word_set:
+                print("No such letter in the word")
+                tries -= 1
 
     else:
         print("You are hanged!")
